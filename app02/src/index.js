@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-//import './index.css';
+import './index.css';
 import App from './App';
 //import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,8 +14,21 @@ const items = [
     "1 teaspoon baking powder",
     "0.5 teaspoon salt"
 ];
+
+const products = [
+  "Car",
+  "Butter",
+  "Meat",
+  "sugar",
+  "eggs",
+  "flour",
+  "powder",
+  "salt"
+];
+
 root.render(
     <React.StrictMode>
         <App items={items} />
+        <App items={products} />
     </React.StrictMode>
 );
