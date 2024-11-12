@@ -6,6 +6,9 @@ import Home from "./components/Home";
 import Projects from "./components/Projects";
 import About from "./components/About";
 import NotFound from "./components/NotFound";
+import ListInventory from "./components/inventory/ListInventory";
+
+import AddInventory from "./components/inventory/AddInventory";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css"
@@ -20,6 +23,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Header />}>
           <Route index element={<Home />} />
+          <Route path="inventory/list" element={<ListInventory />} />
+          <Route path="inventory/add" element={<AddInventory />} />
           <Route path="projects" element={<Projects />} />
           <Route path="about" element={<About />} />
           <Route path="*" element={<NotFound />} />
