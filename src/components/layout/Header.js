@@ -1,7 +1,16 @@
-import { Outlet, NavLink, Link } from "react-router-dom";
+import { Outlet, NavLink, Link, useLocation } from "react-router-dom";
 import image_logo from "../../assets/image_logo.JPG"
+import { isAuthenticated, getUsername, clearJWT } from "../auth/auth-helper";
+
 
 const Header = () => {
+
+  const location = useLocation();
+
+  const signoutClick = () => {
+    clearJWT();
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -46,6 +55,16 @@ const Header = () => {
                   </li>
                 </ul>
               </li >
+              <li className="nav-item">
+                {!isAuthenticated() &&
+                  <NavLink className="nav-link" to="/users/signin">
+                    <i className="fa-solid fa-right-to-bracket"></i> Signin
+                  </NavLink>}
+                {isAuthenticated() &&
+                  <Link className="nav-link" to="/" onClick={signoutClick}>
+                    <i className="fa-solid fa-right-from-bracket"></i> Sign-out ({getUsername()})
+                  </Link>}
+              </li>
             </ul>
           </div>
         </div>

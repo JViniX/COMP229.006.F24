@@ -1,3 +1,4 @@
+import { getToken } from "../components/auth/auth-helper";
 let apiURL = process.env.REACT_APP_APIURL
 
 const list = async () => {
@@ -21,7 +22,8 @@ const create = async (product) => {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ getToken()
             },
             body: JSON.stringify(product)
         })
@@ -38,6 +40,40 @@ const remove = async (id) => {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ getToken()
+            }
+        })
+        return await response.json()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const update = async (id, item) => {
+    try {
+        let response = await fetch(apiURL + '/products/edit/' + id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            },
+            body: JSON.stringify(item)
+        })
+        return await response.json()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+const read = async (id) => {
+    try {
+        let response = await fetch(apiURL + '/products/get/' + id, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
@@ -47,4 +83,4 @@ const remove = async (id) => {
     }
 }
 
-export { list, remove, create }
+export { list, remove, create, update, read }
