@@ -1,14 +1,10 @@
-import { jwtDecode } from "jwt-decode";
-
-const authenticate = (token, cb) => {
+const authenticate = (token, username, cb)=>{
     if (typeof window !== "undefined") {
-        sessionStorage.setItem('token', token);
-
-        let decoded = jwtDecode(token);
-        sessionStorage.setItem('username', decoded.username)
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('username', username)
     }
     cb();
-}
+  }
 
 const isAuthenticated = () => {
     if (typeof window === "undefined") {

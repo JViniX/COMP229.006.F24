@@ -1,20 +1,21 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
-import { signin } from "../../datasource/api-user";
-import { authenticate } from "./auth-helper";
+import { useState } from "react"
+import { authenticate } from './auth-helper.js';
+import { auth } from "../../firebase.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 
 const Signin = () => {
-
     const { state } = useLocation();
     const { from } = state || { from: { pathname: '/' } };
+
+    let navigate = useNavigate();
 
     const [errorMsg, setErrorMsg] = useState('')
     const [user, setUser] = useState({
         email: '',
         password: ''
     });
-
-    let navigate = useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -23,23 +24,24 @@ const Signin = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
-        signin(user).then((response) => {
-            if (response && response.success) {
-                authenticate(response.token, () => {
-                    navigate(from, {replace: true});
+
+        signInWithEmailAndPassword(auth, user.email, user.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log(user);
+                authenticate(user.accessToken, user.displayName, () => {
+                    navigate(from, { replace: true });
                 });
-            }
-            else {
-                setErrorMsg(response.message);
-            }
-        }).catch(err => {
-            setErrorMsg(err.message);
-            console.log(err)
-        });
+            })
+            .catch((error) => {
+                setErrorMsg(error.message);
+                console.log(error)
+            });
     };
 
     return (
+        // -- Content for the Add_Edit page --
         <div className="container" style={{ paddingTop: 80 }}>
             <div className="row">
                 <div className="offset-md-3 col-md-6">
@@ -86,6 +88,6 @@ const Signin = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Signin;
